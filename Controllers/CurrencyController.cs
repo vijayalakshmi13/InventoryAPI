@@ -30,7 +30,11 @@ namespace InventoryAPI.Controllers
             
         }
 
-
+        [HttpGet]
+        public string HealthCheck()
+        {
+            return "OK";
+        }
 
 
         [HttpPost]
