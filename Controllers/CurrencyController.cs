@@ -51,6 +51,7 @@ namespace InventoryAPI.Controllers
                 var blobClient = _containerClient.GetBlobClient(file.FileName);
                 await blobClient.UploadAsync(file.OpenReadStream(), true);
                 status = true;
+                sendMessageToTopic();
                 return Ok();
             }
             catch (Exception ex)
@@ -82,7 +83,7 @@ namespace InventoryAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        public async Task sendMessageToTopic()
+        private async Task sendMessageToTopic()
         {
          
 
