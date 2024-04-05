@@ -18,12 +18,14 @@ namespace InventoryAPI.Controllers
         public const string ErrorMessageKey = "ErrorMessage";
         private readonly BlobServiceClient _blobServiceClient;
         private readonly BlobContainerClient _containerClient;
-        string connectionstring = "DefaultEndpointsProtocol=https;AccountName=vijicapstone;AccountKey=h8yDeMgMzV2UK41IAUZKUAcaykJqB/JhYq8GgxMNgPxa1+Vm67qmwMCX2S0XlZeL3ICVZOms81ku+ASt+5FOdw==;EndpointSuffix=core.windows.net";
-        public CurrencyController()
+        private readonly IConfiguration _configuration;
+        string connectionstring = "DefaultEndpointsProtocol=https;AccountName=vijicapstonecontainer;AccountKey=MxIcpgRGjjR0OCCOiUaR3cWjPle8OStgSo2z51wGYi7dG0IZdzwk5ddG6FgTyaSWpH1n4RCOL3dk+AStBBUygw==;EndpointSuffix=core.windows.net";
+            public CurrencyController(IConfiguration configuration)
         {
 
 
-           
+           _configuration = configuration;
+           // connectionstring = _configuration.GetConnectionString("StorageAccount");
             _blobServiceClient = new BlobServiceClient(connectionstring); 
                 _containerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
                 _containerClient.CreateIfNotExists();
