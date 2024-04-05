@@ -1,8 +1,10 @@
-﻿using Azure.Identity;
+﻿using azure.Data;
+using Azure.Identity;
 using Azure.Messaging.ServiceBus;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using static System.Net.WebRequestMethods;
@@ -22,11 +24,19 @@ namespace InventoryAPI.Controllers
         private readonly BlobContainerClient _containerClient;
         private readonly IConfiguration _configuration;
         string connectionstring = "DefaultEndpointsProtocol=https;AccountName=vijicapstonecontainer;AccountKey=MxIcpgRGjjR0OCCOiUaR3cWjPle8OStgSo2z51wGYi7dG0IZdzwk5ddG6FgTyaSWpH1n4RCOL3dk+AStBBUygw==;EndpointSuffix=core.windows.net";
-            public CurrencyController(IConfiguration configuration)
+        private readonly InventoryDbContext _InventoryDbContext;
+
+        [HttpGet]
+        public async Task<IActionResult> GetalCurrencyl()
         {
+            var emp = await _InventoryDbContext.Currencies.ToListAsync();
+            return Ok(emp);
+        }
+        public CurrencyController(IConfiguration configuration, InventoryDbContext InventoryDbContext)
+        {
+            _InventoryDbContext = InventoryDbContext;
 
-
-           _configuration = configuration;
+            _configuration = configuration;
            // connectionstring = _configuration.GetConnectionString("StorageAccount");
             _blobServiceClient = new BlobServiceClient(connectionstring); 
                 _containerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
